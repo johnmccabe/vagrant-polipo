@@ -7,7 +7,12 @@
    - guest: 8123
      host: 8123
   shell:
-    - sudo sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get install --yes polipo'
-    - sudo echo 'proxyAddress = "::0"' >> /etc/polipo/config
-    - sudo systemctl restart polipo
+    - sudo sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get install --yes build-essential texinfo'
+    - git clone https://github.com/berkley4/polipo.git && cd polipo/ && git fetch && git checkout non-upstream
+    - cd polipo && make all && sudo make install
+    - sudo mkdir -p {/etc,/var/run,/var/cache,/var/log}/polipo
+    - sudo cp /vagrant/files/systemd/polipo.service /etc/systemd/system
+    - sudo cp /vagrant/files/etc/polipo/* /etc/polipo
+    - sudo chown -R proxy:proxy {/etc,/var/run,/var/cache,/var/log}/polipo
+    - sudo systemctl start polipo
   message: "Polipo now accessible from: http://localhost:8123"

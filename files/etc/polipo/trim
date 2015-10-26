@@ -1,0 +1,5 @@
+# Set to 1 if you want to periodically trim your cache, requires python
+POLIPO_TRIM=0
+
+# What size to trim to (suffixes such as M,G, etc. are supported)
+POLIPO_TARGET_SIZE=256M

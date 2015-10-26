@@ -1,0 +1,9 @@
+# This file only needs to list configuration variables that deviate
+# from the default values.  See /vagrant/polipo/config.sample
+# and "polipo -v" for variables you can tweak and further information.
+
+logSyslog = true
+logFile = /var/log/polipo/polipo.log
+
+proxyAddress = "::0"
+diskCacheRoot = /var/cache/polipo

@@ -1,0 +1,12 @@
+[Unit]
+Description=Polipo caching web proxy service
+Documentation=http://www.pps.univ-paris-diderot.fr/~jch/software/polipo/
+
+[Service]
+ExecStart=/usr/local/bin/polipo -c /etc/polipo/config pidFile=/var/run/polipo/polipo.pid
+Restart=on-abort
+User=proxy
+Group=proxy
+
+[Install]
+WantedBy=multi-user.target
