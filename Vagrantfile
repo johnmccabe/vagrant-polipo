@@ -1,0 +1,48 @@
+# -*- mode: ruby -*-
+# # vi: set ft=ruby :
+
+# Specify minimum Vagrant version and Vagrant API version
+Vagrant.require_version ">= 1.6.0"
+VAGRANTFILE_API_VERSION = "2"
+
+# Require YAML module
+require 'yaml'
+
+# Read YAML file with box details
+servers = YAML.load_file('servers.yaml')
+
+# Create boxes
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Iterate through server entries in YAML file
+  servers.each do |server|
+    config.vm.define server["name"] do |server_config|
+      server_config.vm.box = server["box"]
+
+      if server.has_key?("ip")
+        server_config.vm.network "private_network", ip: server["ip"]
+      end
+
+      if server.has_key?("forwarded_ports")
+        server["forwarded_ports"].each do |ports|
+          server_config.vm.network "forwarded_port", guest: ports["guest"], host: ports["host"], guest_ip: ports["guest_ip"]
+        end
+      end
+
+      server_config.vm.hostname = server["name"]
+      server_config.vm.provider :virtualbox do |vb|
+        vb.name = server["name"]
+        vb.memory = server["ram"]
+        vb.cpus = server["cpus"]
+      end
+      if server.has_key?("shell")
+        server["shell"].each do |cmd|
+          server_config.vm.provision "shell", privileged: false, inline: cmd
+        end
+      end
+      if server.has_key?("message")
+        server_config.vm.post_up_message = server["message"]
+      end
+    end
+  end
+end

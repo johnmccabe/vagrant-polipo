@@ -1,0 +1,13 @@
+---
+- name: polipo
+  box: ubuntu/vivid64
+  ram: 1024
+  cpus: 2
+  forwarded_ports:
+   - guest: 8123
+     host: 8123
+  shell:
+    - sudo sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get install --yes polipo'
+    - sudo echo 'proxyAddress = "::0"' >> /etc/polipo/config
+    - sudo systemctl restart polipo
+  message: "Polipo now accessible from: http://localhost:8123"
