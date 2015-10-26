@@ -5,6 +5,6 @@ Project page:
 
 Clone this repo followed by `vagrant up`, the proxy will be started and port forwarded to port 8123 on your localhost.
 
-- http://localhost:8123
+- [http://localhost:8123](http://localhost:8123)
 
 *NOTE* - care should be taken as the proxy is not locked down
